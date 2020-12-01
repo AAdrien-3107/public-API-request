@@ -1,5 +1,8 @@
 const gallery = document.getElementById('gallery');
 const cards = document.getElementsByClassName('card');
+const openModalButtons = document.querySelectorAll('[data-button-target]');
+const closeModalButtons = document.querySelectorAll('[data-close-button]');
+const overlay = document.getElementById('overlay');
 
 // ------------------------------------------
 //  FETCH FUNCTIONS
@@ -13,10 +16,9 @@ function fetchData(url) {
               const users = data.results
               users.forEach((user) => {
                 populateGallery(user);
-                
-             
+                populateModal(user);               
             })
-            
+                       
           })
              .catch(error => console.log('Looks like there was a problem!', error))
   };
@@ -37,18 +39,20 @@ function fetchData(url) {
   function populateGallery(data) {
     //i need to create UL and LI to populate my galery.
     const galleryDiv = `
+         
           <div id=${data.email} class="card">
               <div class="card-img-container">
                   <img class="card-img" src=${data.picture.large} alt="profile picture">
               </div>
               <div class="card-info-container">
+              <button button-modal-target ="#modal">More info</button>
                   <h3 id="name" class="card-name cap">${data.name.title} ${data.name.first} ${data.name.last}</h3>
                  <p class="card-text">${data.email}</p>
                    <p class="card-text cap">${data.location.city}, ${data.location.country}</p>
                </div>
           </div>`;
 
-          gallery.insertAdjacentHTML('beforeEnd', galleryDiv);
+    gallery.insertAdjacentHTML("beforeEnd", galleryDiv);
   }
 
   function populateModal(data){
@@ -59,7 +63,8 @@ function fetchData(url) {
     const modalDiv = `
     <div class="modal-container">
             <div class="modal">
-                <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>X</strong></button>
+                 <!-- Using '&times;' instead of 'x' so it wont scale up depending of the size of the window. -->
+                <button type="button" id="modal-close-btn" class="modal-close-btn"><strong>&times;</strong></button>
                 <div class="modal-info-container">
                     <img class="modal-img" src="${data.picture.large} alt="profile picture">
                     <h3 id="name" class="modal-name cap">${data.name.title} ${data.name.first} ${data.name.last}</h3>
@@ -70,29 +75,65 @@ function fetchData(url) {
                     <p class="modal-text">${data.location.street}, ${data.location.city}, ${data.location.postcode}</p>
                     <p class="modal-text">Birthday: ${data.dob.date}</p>
                 </div>
-            </div>`;
+            </div>
+            <div id="overlay"></div>;`
 
             modal.insertAdjacentHTML('beforeEnd', modalDiv);
             modal.style.display = 'none';
+            
 
 
   }
 
-  
-
-  
-
-
 // ------------------------------------------
 //  EVENT LISTENERS
 // ------------------------------------------
-//select.addEventListener('change', fetchBreedImage);
-//card.addEventListener('click', fetchBreedImage);
-//form.addEventListener('submit', postData);
 
+
+  document.addEventListener('click', () => {
+     const modals = document.querySelectorAll('.modal.active')
+     modals.forEach(modal =>{
+     closeModal(modal);
+   })
+  })
       
-  
+  openModalButtons.forEach(button =>{
+    button.addEventListener('click',() =>{
+      const modal = document.querySelector(button.dataset.modalTarget);
+      openModal(modal);
+    })
+  })
+  closeModalButtons.forEach(button =>{
+    button.addEventListener('click',() =>{
+      const modal = button.closest('.modal');
+      closeModal(modal);
+    })
+  })
 
+  function openModal(modal){
+    if(modal == null)return
+    modal.classList.add('active');
+    overlay.classList.add('active');
+  }
+
+
+  function closeModal(modal){
+    if(modal == null)return
+    modal.classList.remove('active');
+    overlay.classList.add('active');
+  }
+  document.addEventListener('click', () => {
+    
+    if(Event.currentTarget == "More info"){
+      button.addEventListener('click',() =>{
+        console.log('im being clicked');
+      })
+      
+    }else{
+      console.log(Event.currentTarget);
+    }
+    
+  })
 // ------------------------------------------
 //  POST DATA
 // ------------------------------------------

@@ -124,6 +124,21 @@ header h1 {
    Modal
 ======================================== */
 
+#overlay {
+    position: fixed;
+    top:0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, .5);
+    pointer-events: none;
+
+}
+#overlay.active{
+    opacity: 1;
+    pointer-events: all;
+
+}
 .modal-container {
     position: fixed;
     top: 0;
@@ -138,12 +153,17 @@ header h1 {
     width: 95%;
     max-width: 420px;
     min-height: 415px;
+    z-index: 10;
     margin: 10px auto auto;
     padding-bottom: 15px;
     background: rgba(255, 255, 255, 1);
     border-radius: 0.25em;
     border: 1px solid rgba(100, 100, 100, 0.3);
     transition: .4s ease-out;
+    transform: translate(-50%, -50%)scale(0);
+}
+.modal.active{
+    transform: translate(-50%, -50%)scale(1);
 }
 
 .modal-close-btn {
