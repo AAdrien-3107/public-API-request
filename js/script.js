@@ -28,14 +28,16 @@ function fetchData(url) {
 // ------------------------------------------
 //  HELPER FUNCTIONS
 // ------------------------------------------
-  function checkStatus(response) {
+  
+function checkStatus(response) {
     if (response.ok) {
       return Promise.resolve(response);
     } else {
       return Promise.reject(new Error(response.statusText));
     }
   }
-  
+
+  // This methode will create cards for each users.
   function populateGallery(data) {
     //i need to create UL and LI to populate my galery.
     const galleryDiv = `
@@ -55,6 +57,7 @@ function fetchData(url) {
     gallery.insertAdjacentHTML("beforeEnd", galleryDiv);
   }
 
+//This will create the modal and implement the data of the user.
   function populateModal(data){
     const modal = document.createElement('div');
     modal.className = 'modal-container';
@@ -85,31 +88,6 @@ function fetchData(url) {
 
   }
 
-// ------------------------------------------
-//  EVENT LISTENERS
-// ------------------------------------------
-
-
-  document.addEventListener('click', () => {
-     const modals = document.querySelectorAll('.modal.active')
-     modals.forEach(modal =>{
-     closeModal(modal);
-   })
-  })
-      
-  openModalButtons.forEach(button =>{
-    button.addEventListener('click',() =>{
-      const modal = document.querySelector(button.dataset.modalTarget);
-      openModal(modal);
-    })
-  })
-  closeModalButtons.forEach(button =>{
-    button.addEventListener('click',() =>{
-      const modal = button.closest('.modal');
-      closeModal(modal);
-    })
-  })
-
   function openModal(modal){
     if(modal == null)return
     modal.classList.add('active');
@@ -122,6 +100,36 @@ function fetchData(url) {
     modal.classList.remove('active');
     overlay.classList.add('active');
   }
+
+// ------------------------------------------
+//  EVENT LISTENERS
+// ------------------------------------------
+
+//This eventlistner should close the modal and set the overlay back to normale state.
+  document.addEventListener('click', () => {
+     const modals = document.querySelectorAll('.modal.active')
+     modals.forEach(modal =>{
+     closeModal(modal);
+   })
+  })
+  
+  //this EL will listnen for the button "More info" and open the modal.
+  openModalButtons.forEach(button =>{
+    button.addEventListener('click',() =>{
+      const modal = document.querySelector(button.dataset.modalTarget);
+      openModal(modal);
+    })
+  })
+
+  //this should close the Modal
+  closeModalButtons.forEach(button =>{
+    button.addEventListener('click',() =>{
+      const modal = button.closest('.modal');
+      closeModal(modal);
+    })
+  })
+
+  // This EL is desperation on trying to findout where i fuckup!hahah
   document.addEventListener('click', () => {
     
     if(Event.currentTarget == "More info"){
