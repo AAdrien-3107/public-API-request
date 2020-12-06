@@ -1,9 +1,8 @@
 const gallery = document.getElementById("gallery");
 const cards = document.getElementsByClassName("card");
-const openModalButtons = document.querySelectorAll("[button-modal-target]");
-const closeModalButtons = document.querySelectorAll("[data-close-button]");
 const bodyDiv = document.getElementById("gallery");
 const overlayDiv = document.createElement("div");
+const activeModal = null;
 
 // ------------------------------------------
 //  FETCH FUNCTIONS
@@ -41,8 +40,7 @@ function checkStatus(response) {
 
 // This methode will create cards for each users.
 function populateGallery(data) {
-  const galleryDiv =         
-          `<div id=${data.email} class="card">        
+  const galleryDiv = `<div id=${data.email} class="card">        
               <div class="card-img-container">
                   <img class="card-img" src=${data.picture.large} alt="profile picture">
               </div>
@@ -61,12 +59,10 @@ function populateGallery(data) {
 function populateModal(data) {
   const modal = document.createElement("div");
   modal.className = "modal-container";
-  //modal.id = `${data.email}`;
-  
+
   gallery.appendChild(modal);
 
-  const modalDiv = 
-              `<div class="modal" id="${data.email}" onclick="reply_click(this.id)">
+  const modalDiv = `<div class="modal" id="${data.email}" >
                  <!-- Using '&times;' instead of 'x' so it wont scale up depending of the size of the window. -->
                 <button data-close-button type="button" id="modal-close-btn" class="modal-close-btn"><strong>&times;</strong></button>
                 <div class="modal-info-container">
@@ -85,10 +81,9 @@ function populateModal(data) {
   modal.style.display = "none";
 }
 
-
-function reply_click(clicked_id)
-{
-    return console.log(clicked_id);
+function reply_click(clicked_id) {
+  let consoleClick = console.log(clicked_id);
+  return consoleClick;
 }
 // ------------------------------------------
 //  EVENT LISTENERS
@@ -98,60 +93,74 @@ function reply_click(clicked_id)
 
 //this EL will listnen for the button "More info" and open the modal.
 
-function openModal(modal) {
- 
-  const parentModal = modal.parentNode;
+function openModal(activeModal) {
+  const parentModal = activeModal.parentNode;
 
-    bodyDiv.parentNode.appendChild(overlayDiv);
-    bodyDiv.parentNode.insertBefore(bodyDiv.parentNode.appendChild(overlayDiv),bodyDiv);
-    
-    overlayDiv.classList.add("overlay");
+  bodyDiv.parentNode.appendChild(overlayDiv);
+  bodyDiv.parentNode.insertBefore(
+    bodyDiv.parentNode.appendChild(overlayDiv),
+    bodyDiv
+  );
 
-    if (modal == null) return;
-      modal.classList.add("active");
-      parentModal.style.display = "";
+  overlayDiv.classList.add("overlay");
 
+  if (activeModal == null) return;
+  activeModal.classList.add("active");
+  parentModal.style.display = "block";
 }
 
-function closeModal(modal) {
+function closeModal(activeModal) {
   console.log("i am in the close modal ");
-  if (modal == null) return;
-  modal.classList.remove("active");
-  overlay.classList.add("active");
-  modal.style.display = "none";
+  if (activeModal == null) return;
+  activeModal.classList.remove("active");
+  gallery.previousSibling.style.display = "none";
+  activeModal.style.display = "none";
 }
-function selectMatchModal(){
-  const modalContainers = document.querySelectorAll(".modal-container");
-  for(ru = 0;ru<= modalContainers.length; ru++){
-    console.log(modalContainers[ru]);
+function selectMatchModal() {
+  const modalContainers = document.querySelectorAll(".modal");
+  for (ru = 0; ru <= modalContainers.length; ru++) {
+    return modalContainers[ru].id;
   }
-
-
 }
-function listnerHandler() {
+
+function listnerHandler(activeModal) {
   const divCard = document.querySelectorAll(".card");
-  const modal = document.querySelector("div.modal");
-  const closeModalBtn = document.querySelectorAll('.modal.active');
-  const modalActive = divCard.firstChild;
-  selectMatchModal();
+  const closeModalBtn = document.querySelectorAll(".modal-container");
 
   divCard.forEach((button) => {
-    button.addEventListener("onclick", () => {
-    
-     
+    button.addEventListener("click", () => {
+      const modalContainers = document.querySelectorAll(".modal");
+
+      for (i = 0; i <= modalContainers.length; i++) {
+        console.log(modalContainers[i]);
+        if (modalContainers[i].id === event.target.parentNode.parentNode.id) {
+          activeModal = modalContainers[i];
+          console.log(
+            modalContainers[i].id +
+              "Matches this : " +
+              event.target.parentNode.parentNode.id
+          );
+          openModal(activeModal);
+        }
+      }
     });
   });
-  //console.log(modalActive.firstChild.nodeName);
-  //need to get the modal.active and to just remove the active
+
   closeModalBtn.forEach((button) => {
-    button.addEventListener("click", () =>{
-      
+    button.addEventListener("click", () => {
       console.log("x is pressed");
-      closeModal(modal);
-    })
+      closeModal(activeModal);
+    });
   });
 }
 
 // ------------------------------------------
 //  POST DATA
 // ------------------------------------------
+//Need to make a function to replace the previous modal if a new one is being open
+//Need to make sure the modal that has been open is in the midle.
+//need to fix the search bar.
+// need to fix the error handler on line 140 
+// need to add the previous and next user.
+//neeed to fix the modal objec object and the date
+//
