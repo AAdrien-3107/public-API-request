@@ -174,56 +174,68 @@ function selectMatchModal() {
 function listnerHandler() {
   const divCard = document.querySelectorAll(".card");
   const closeModalBtn = document.querySelectorAll(".modal-close-btn");
-  const previousUser = document.querySelectorAll('.modal-btn-container');
-  const userModal = document.querySelectorAll('.modal');
-  
+  const previousUser = document.querySelectorAll(".modal-btn-container");
+  const userModal = document.querySelectorAll(".modal");
 
   divCard.forEach((button) => {
-    button.addEventListener("click", ()=>{
-     if(event.target.id ==='moreInfo'){
-      selectMatchModal();
-      openModal(selectMatchModal());
+    button.addEventListener("click", () => {
+      if (event.target.id === "moreInfo") {
+        selectMatchModal();
+        openModal(selectMatchModal());
       }
-     
-      
     });
   });
-  
+
+
   closeModalBtn.forEach((button) => {
     button.addEventListener("click", () => {
-      
-        closeModal(selectMatchModal);
-        console.log(event.target);
-      
+      closeModal(selectMatchModal);
+      console.log(event.target);
     });
   });
-  previousUser.forEach((button)=>{
-    button.addEventListener("click", () =>{
-      if(event.target.id ==='modal-prev'){
-        for(i = 0; i<=userModal.length; i++){
-          console.log(userModal[i]);
-          let userArr = [];
-          userArr.push(i);
-          console.log(userArr);
-          let modalActivated = document.querySelector('.modal.active').id;
-            if(modalActivated === userModal[i].id){
-              console.log(`${modalActivated } matches this user ${userModal[i].id} from the array userModal`);
-              var i = userArr.indexOf(modalActivated);
-              var val1 = userArr[i-1];
-              console.log(val1);
 
-            }else{
-              console.log(`${modalActivated} hasnt been found in the array.`);
+  previousUser.forEach((button) => {
+    button.addEventListener("click", () => {
+      if (event.target.id === "modal-next") {
+        for (i = 0; i <= userModal.length; i++) {
+          let modalActivated = document.querySelector(".modal.active").id;
+          if (modalActivated === userModal[i].id) {
+            if (i === 11) {
+              alert(`There are no other user after.`);
+            } else {
+              let nextUserId = userModal[i += 1];
+             
+              closeModal(userModal);
+              openModal(nextUserId);
             }
-
+          } 
         }
-        console.log("prev is being pressed ")
-      }else{
-        console.log('next is being pressed');
-      }
+      } 
       //activeModal.previousSibling.previousSibling;
-    })
-  })
+    });
+  });
+
+
+  previousUser.forEach((button) => {
+    button.addEventListener("click", () => {
+      if (event.target.id === "modal-prev") {
+        for (i = 0; i <= userModal.length; i++) {
+          let modalActivated = document.querySelector(".modal.active").id;
+          if (modalActivated === userModal[i].id) {
+            if (i === 0) {
+              alert(`There are no other user before.`);
+            } else {
+              let previousUserId = userModal[i - 1];
+              console.log("this is the previous user" + previousUserId);
+              closeModal(userModal);
+              openModal(previousUserId);
+            }
+          } 
+        }
+      } 
+      //activeModal.previousSibling.previousSibling;
+    });
+  });
 }
 
 // ------------------------------------------
