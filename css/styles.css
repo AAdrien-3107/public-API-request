@@ -16,21 +16,27 @@ html, body {
 body {
     font-family: "Nunito", sans-serif;
     text-align: center;
-    background: rgba(235, 235, 235, 0.9);
+    background: rgba(230, 162, 107, 0.9);
 }
 
 header {
     padding: 15px 5px 5px;
+    background-color:rgba(58, 45, 233, 0.842);
+    border-bottom-color: rgba(56, 55, 55, 0.3);
+    border-bottom-style: solid;
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 15px;
 }
 
 .header-inner-container {
     max-width: 1180px;
     margin: auto;
+    
 }
 
 header h1 {
-    font-size: 1.25em;
-    color: rgba(50, 50, 50, 0.9);
+    font-size: 1.4em;
+    color: rgba(247, 243, 243, 0.9);
     margin-top: 35px;
 }
 
@@ -92,6 +98,9 @@ header h1 {
     border: 1px solid rgba(50, 50, 50, 0.3);
     transition: .4s ease-out;
     overflow: hidden;
+    border-style: solid;
+    border-width: thick;
+    border-color: rgba(231, 86, 49, 0.705);
 }
 
 .card-img {
