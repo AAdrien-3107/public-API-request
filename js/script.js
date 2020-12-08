@@ -14,6 +14,7 @@ function fetchData(url) {
   return fetch(url)
     .then(checkStatus)
     .then((res) => res.json())
+    //.then((res)=> {console.log(res);})
     .then((data) => {
       const users = data.results;
       users.forEach((user) => {
@@ -48,7 +49,7 @@ function populateGallery(data) {
                   <img class="card-img" src=${data.picture.large} alt="profile picture">
               </div>
               <div class="card-info-container">
-              <button button-modal-target ="#modal">More info</button>
+              <button button-modal-target ="#modal" id="moreInfo">More info</button>
                   <h3 id="name" class="card-name cap">${data.name.title} ${data.name.first} ${data.name.last}</h3>
                  <p class="card-text">${data.email}</p>
                    <p class="card-text cap">${data.location.city}, ${data.location.country}</p>
@@ -56,12 +57,17 @@ function populateGallery(data) {
           </div>`;
 
   gallery.insertAdjacentHTML("beforeEnd", galleryDiv);
+
 }
 
 //This will create the modal and implement the data of the user.
 function populateModal(data) {
   const modal = document.createElement("div");
   modal.className = "modal-container";
+  const dobRaw = data.dob.date;
+  const timestampRegEx = /\T(.*)$/
+  const dateRegEx = /^(\d{4})-(\d{2})-(\d{2})*/
+  const dobFormatted = dobRaw.replace(timestampRegEx, '').replace(dateRegEx, '$2/$3/$1');
 
   gallery.appendChild(modal);
 
@@ -75,9 +81,13 @@ function populateModal(data) {
                     <p class="modal-text cap">${data.location.city}</p>
                     <hr>
                     <p class="modal-text">${data.phone}</p>
-                    <p class="modal-text">${data.location.street}, ${data.location.city}, ${data.location.postcode}</p>
-                    <p class="modal-text">Birthday: ${data.dob.date}</p>
+                    <p class="modal-text">${data.location.street.number} ${data.location.street.name}, ${data.location.city}, ${data.location.postcode}</p>
+                    <p class="modal-text">Birthday: ${dobFormatted}</p>
               </div>
+              <div class="modal-btn-container">
+                    <button type="button" id="modal-prev" class="modal-prev btn">Prev</button>
+                    <button type="button" id="modal-next" class="modal-next btn">Next</button>
+                </div>
                  `;
 
   modal.insertAdjacentHTML("beforeEnd", modalDiv);
@@ -161,47 +171,68 @@ function selectMatchModal() {
   }
 }
 
-function listnerHandler(activeModal) {
+function listnerHandler() {
   const divCard = document.querySelectorAll(".card");
-  const closeModalBtn = document.querySelectorAll(".modal-container");
+  const closeModalBtn = document.querySelectorAll(".modal-close-btn");
+  const previousUser = document.querySelectorAll('.modal-btn-container');
+  const userModal = document.querySelectorAll('.modal');
   
+
   divCard.forEach((button) => {
     button.addEventListener("click", ()=>{
+     if(event.target.id ==='moreInfo'){
       selectMatchModal();
       openModal(selectMatchModal());
-    }/*() => {
-      const modalContainers = document.querySelectorAll(".modal");
-
-      for (i = 0; i <= modalContainers.length; i++) {
-        console.log(modalContainers[i]);
-        if (modalContainers[i].id === event.target.parentNode.parentNode.id) {
-          activeModal = modalContainers[i];
-          console.log(
-            modalContainers[i].id +
-              "Matches this : " +
-              event.target.parentNode.parentNode.id
-          );
-          openModal(activeModal);
-        }
       }
-    }*/);
-  });
-
-  closeModalBtn.forEach((button) => {
-    button.addEventListener("click", () => {
-      console.log("x is pressed");
-      closeModal(selectMatchModal);
+     
+      
     });
   });
+  
+  closeModalBtn.forEach((button) => {
+    button.addEventListener("click", () => {
+      
+        closeModal(selectMatchModal);
+        console.log(event.target);
+      
+    });
+  });
+  previousUser.forEach((button)=>{
+    button.addEventListener("click", () =>{
+      if(event.target.id ==='modal-prev'){
+        for(i = 0; i<=userModal.length; i++){
+          console.log(userModal[i]);
+          let userArr = [];
+          userArr.push(i);
+          console.log(userArr);
+          let modalActivated = document.querySelector('.modal.active').id;
+            if(modalActivated === userModal[i].id){
+              console.log(`${modalActivated } matches this user ${userModal[i].id} from the array userModal`);
+              var i = userArr.indexOf(modalActivated);
+              var val1 = userArr[i-1];
+              console.log(val1);
+
+            }else{
+              console.log(`${modalActivated} hasnt been found in the array.`);
+            }
+
+        }
+        console.log("prev is being pressed ")
+      }else{
+        console.log('next is being pressed');
+      }
+      //activeModal.previousSibling.previousSibling;
+    })
+  })
 }
 
 // ------------------------------------------
 //  POST DATA
 // ------------------------------------------
 //Need to make a function to replace the previous modal if a new one is being open : check
-//Need to make sure the modal that has been open is in the midle.
+//Need to make sure the modal that has been open is in the midle.:Check
 //need to fix the search bar.
-// need to fix the error handler on line 140 
+// need to fix the error handler on line 140 //
 // need to add the previous and next user.
-//neeed to fix the modal objec object and the date
+//neeed to fix the modal objec object and the date Check!
 //
