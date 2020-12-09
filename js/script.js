@@ -18,7 +18,9 @@ function fetchData(url) {
         users.forEach((user) => {
             populateGallery(user);
             populateModal(user);
+           
         });
+        
         listnerHandler();
         impSearchBar();
       
@@ -50,7 +52,7 @@ function populateGallery(data) {
                    <img class="card-img" src=${data.picture.large} alt="profile picture">
               </div>
               <div class="card-info-container">
-                    <button button-modal-target ="#modal" id="moreInfo">More info</button>
+                    
                     <h3 id="name" class="card-name cap">${data.name.title} ${data.name.first} ${data.name.last}</h3>
                     <p class="card-text">${data.email}</p>
                     <p class="card-text cap">${data.location.city}, ${data.location.country}</p>
@@ -187,16 +189,17 @@ function impSearchBar() {
 //This will handle all the event handler for all the button.
 
 function listnerHandler() {
-  const divCard = document.querySelectorAll(".card");
+  const divCard = document.querySelectorAll(".card-img-container");
   const closeModalBtn = document.querySelectorAll(".modal-close-btn");
   const modalContainerBtn = document.querySelectorAll(".modal-btn-container");
   const userModal = document.querySelectorAll(".modal");
+  const userModalId = document.querySelectorAll(".modal").id;
 
   divCard.forEach((button) => {
     button.addEventListener("click", () => {
-      if (event.target.id === "moreInfo") {
+      
         openModal(selectMatchModal());
-      }
+      
     });
   });
 
@@ -213,7 +216,8 @@ function listnerHandler() {
       if (event.target.id === "modal-next") {
         for (i = 0; i <= userModal.length; i++) {
           let modalActivated = document.querySelector(".modal.active").id;
-          if (modalActivated === userModal[i].id) {
+          if (modalActivated === (userModal[i].id)) {
+            console.log(userModal[i].id);
             if (i === 11) {
               alert(`There are no other user after.`);
             } else {
@@ -233,7 +237,10 @@ function listnerHandler() {
       if (event.target.id === "modal-prev") {
         for (i = 0; i <= userModal.length; i++) {
           let modalActivated = document.querySelector(".modal.active").id;
+          console.log((userModal[i]));
+          console.log(document.querySelector('.modal').id)
           if (modalActivated === userModal[i].id) {
+            
             if (i === 0) {
               alert(`There are no other user before.`);
             } else {
