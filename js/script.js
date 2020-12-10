@@ -189,11 +189,11 @@ function impSearchBar() {
 //This will handle all the event handler for all the button.
 
 function listnerHandler() {
-  const divCard = document.querySelectorAll(".card-img-container");
+  const divCard = document.querySelectorAll(".card");
   const closeModalBtn = document.querySelectorAll(".modal-close-btn");
   const modalContainerBtn = document.querySelectorAll(".modal-btn-container");
   const userModal = document.querySelectorAll(".modal");
-  const userModalId = document.querySelectorAll(".modal").id;
+  
 
   divCard.forEach((button) => {
     button.addEventListener("click", () => {
@@ -212,9 +212,9 @@ function listnerHandler() {
 
   //Forloop to check all the value in the array and see which one matches and minus one index to get the previous user in the list.
   modalContainerBtn.forEach((button) => {
-    button.addEventListener("click", () => {
+    button.addEventListener("click", (e) => {
       if (event.target.id === "modal-next") {
-        for (i = 0; i <= userModal.length; i++) {
+        for (i = 0; i < userModal.length; i++) {
           let modalActivated = document.querySelector(".modal.active").id;
           if (modalActivated === (userModal[i].id)) {
             console.log(userModal[i].id);
@@ -233,9 +233,9 @@ function listnerHandler() {
 
 //this does the same as the previous btn EL but adds +1 to the index to get the next user in the list.
   modalContainerBtn.forEach((button) => {
-    button.addEventListener("click", () => {
+    button.addEventListener("click", (e) => {
       if (event.target.id === "modal-prev") {
-        for (i = 0; i <= userModal.length; i++) {
+        for (i = 0; i < userModal.length; i++) {
           let modalActivated = document.querySelector(".modal.active").id;
           console.log((userModal[i]));
           console.log(document.querySelector('.modal').id)
