@@ -108,9 +108,9 @@ function populateModal(data) {
 //an overlay is being generated to dim the background.
 function openModal(activeModal) {
 
-  const parentModal = activeModal.parentNode;
-  console.log("open modal functiong = activemodal = "+ activeModal.id);
-  console.log("the parent node of the activeModal is " + activeModal.parentNode);
+  const parentModal = activeModal;
+ // console.log("open modal functiong = activemodal = "+ activeModal.id);
+  //console.log("the parent node of the activeModal is " + activeModal.parentNode);
 
   if(!document.querySelector('.modal.active')){
     gallery.parentNode.appendChild(overlayDiv);
@@ -124,7 +124,7 @@ function openModal(activeModal) {
     
     if (activeModal == null) return;
       activeModal.classList.add("active");
-      parentModal.style.display = "block";
+      parentModal.parentNode.style.display = "block";
     }else {
       closeModal(document.querySelector('.modal.active'));
       openModal(activeModal);
@@ -145,16 +145,25 @@ function closeModal(activeModal) {
 //This function helps the open and close function to open the right card with the id in common.
 function selectMatchModal() {
   
-  const modalContainers = document.querySelectorAll(".modal");
+const modalContainers = document.querySelectorAll(".modal");
   //Forloop to go through the list of cards we have and checks which one is semilar to the id of the one being clicked.
-  for (i = 0; i <= modalContainers.length; i++) {
+  for (i = 0; i < modalContainers.length; i++) {
     if (modalContainers[i].id === event.target.parentNode.parentNode.id) {
       const activeModal = modalContainers[i];
       console.log(modalContainers[i].id + " Matches this : " + event.target.parentNode.parentNode.id);
     return activeModal;
-    }  
+    }else {
+      //If the the user doesnt click on the card info image or on the card img container this will be applied to id to return the id.
+      if(modalContainers[i].id === event.target.id) {
+        const activeModal = modalContainers[i];
+        console.log(modalContainers[i].id + " Matches this : " + event.target.id);
+      return activeModal;
+       } 
+
+    }
   }
 }
+
 //This function implement the search bar to the website.
 //only working with US Alphabet
 function impSearchBar() {
@@ -195,14 +204,13 @@ function listnerHandler() {
   const userModal = document.querySelectorAll(".modal");
   
 
-  divCard.forEach((button) => {
-    button.addEventListener("click", () => {
-      
-        openModal(selectMatchModal());
-      
-    });
+  for(i = 0; i< divCard.length; i++){
+    divCard[i].addEventListener("click", () => {
+       
+      openModal(selectMatchModal());
+    
   });
-
+  }
 
   closeModalBtn.forEach((button) => {
     button.addEventListener("click", () => {
@@ -214,6 +222,7 @@ function listnerHandler() {
   modalContainerBtn.forEach((button) => {
     button.addEventListener("click", (e) => {
       if (event.target.id === "modal-next") {
+        console.log(event.target)
         for (i = 0; i < userModal.length; i++) {
           let modalActivated = document.querySelector(".modal.active").id;
           if (modalActivated === (userModal[i].id)) {
